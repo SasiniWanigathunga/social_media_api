@@ -1,0 +1,17 @@
+.venv/
+fastapienv/
+
+__pycache__/
+*.pyc
+
+.env
+.env.*
+!.env.example
+
+*.db
+
+*.log
+*.log.*
+
+.vscode/
+.pytest_cache/

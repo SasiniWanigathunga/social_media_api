@@ -1,0 +1,25 @@
+[project]
+name = "fastapi-course"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "asgi-correlation-id>=5.0.1",
+    "databases[aiosqlite]>=0.9.0",
+    "fastapi>=0.136.1",
+    "logtail-python>=0.3.4",
+    "pydantic-settings>=2.14.2",
+    "python-dotenv>=1.2.2",
+    "python-json-logger>=4.1.0",
+    "rich>=15.0.0",
+    "ruff>=0.15.12",
+    "sqlalchemy>=2.0.51",
+    "uvicorn[standard]>=0.46.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers"
+markers = [
+    "anyio: mark a test to run on the anyio plugin",
+]
