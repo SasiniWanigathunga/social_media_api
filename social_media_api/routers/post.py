@@ -7,8 +7,10 @@ from social_media_api.models.post import (
     CommentOutput,
     UserPostwithComments,
 )
+from social_media_api.models.user import User
+from social_media_api import security
 from social_media_api.database import post_table, comment_table, database
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
 
 router = APIRouter()
 
@@ -22,8 +24,9 @@ async def find_post(post_id: int):
 
 
 @router.post("/posts", response_model=UserPostOutput, status_code=201)
-async def create_post(post: UserPostInput):
-    logger.info(f"Creating a new post")
+async def create_post(post: UserPostInput, request: Request):
+    logger.info(f"Creating a new post") #noqa
+    current_user: User = await security.get_current_user(await security.oauth2_scheme(request)) #noqa
     data = post.dict()
     query = post_table.insert().values(**data)
     logger.debug(f"Executing query: {query}")
@@ -41,8 +44,9 @@ async def get_posts():
 
 
 @router.post("/comments", response_model=CommentOutput, status_code=201)
-async def create_comment(comment: CommentInput):
+async def create_comment(comment: CommentInput, request: Request):
     logger.info(f"Creating a new comment for post ID: {comment.post_id}")
+    current_user: User = await security.get_current_user(await security.oauth2_scheme(request)) #noqa
     data = comment.dict()
     post = await find_post(data["post_id"])
     if not post:

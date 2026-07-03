@@ -3,6 +3,7 @@ import datetime
 from jose import jwt, JWTError, ExpiredSignatureError
 from fastapi import HTTPException, status
 from passlib.context import CryptContext
+from fastapi.security import OAuth2PasswordBearer
 
 from social_media_api.database import user_table, database
 
@@ -10,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 SECRET_KEY="jni8943jnweintgnng94i59ug4n98ru4n9u4hv9uji9"
 ALGORITHM="HS256"
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 pwt_context = CryptContext(schemes=["pbkdf2_sha256"])
 
