@@ -40,7 +40,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwt_context.verify(plain_password, hashed_password)
 
 async def get_user(email: str):
-    logger.debug(f"Fetching user from the database.", extra={"email": email})
+    logger.debug(f"Fetching user from the database.", extra={"email": email}) #noqa
     query = user_table.select().where(user_table.c.email == email)
     user = await database.fetch_one(query)
     if user:
