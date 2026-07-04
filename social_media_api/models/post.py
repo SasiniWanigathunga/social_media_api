@@ -9,6 +9,7 @@ class UserPostInput(BaseModel):
 
 class UserPostOutput(UserPostInput):
     id: int
+    user_id: int
 
 
 class CommentInput(BaseModel):
@@ -20,6 +21,7 @@ class CommentInput(BaseModel):
 
 class CommentOutput(CommentInput):
     id: int
+    user_id: int
 
 class UserPostWithComments(BaseModel):
     post: UserPostOutput

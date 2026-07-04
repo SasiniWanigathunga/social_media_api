@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from typing import Annotated
 import logging
 from social_media_api.models.post import (
     UserPostInput,
@@ -24,10 +25,9 @@ async def find_post(post_id: int):
 
 
 @router.post("/posts", response_model=UserPostOutput, status_code=201)
-async def create_post(post: UserPostInput, request: Request):
+async def create_post(post: UserPostInput, current_user: Annotated[User, Depends(security.get_current_user)]):
     logger.info(f"Creating a new post") #noqa
-    current_user: User = await security.get_current_user(await security.oauth2_scheme(request)) #noqa
-    data = post.dict()
+    data = {**post.dict(), "user_id": current_user.id}
     query = post_table.insert().values(**data)
     logger.debug(f"Executing query: {query}")
     last_record_id = await database.execute(query)
@@ -44,10 +44,9 @@ async def get_posts():
 
 
 @router.post("/comments", response_model=CommentOutput, status_code=201)
-async def create_comment(comment: CommentInput, request: Request):
+async def create_comment(comment: CommentInput, current_user: Annotated[User, Depends(security.get_current_user)]):
     logger.info(f"Creating a new comment for post ID: {comment.post_id}")
-    current_user: User = await security.get_current_user(await security.oauth2_scheme(request)) #noqa
-    data = comment.dict()
+    data = {**comment.dict(), "user_id": current_user.id}
     post = await find_post(data["post_id"])
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
