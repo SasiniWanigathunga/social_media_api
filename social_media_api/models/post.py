@@ -12,6 +12,10 @@ class UserPostOutput(UserPostInput):
     user_id: int
 
 
+class UserPostWithLikes(UserPostOutput):
+    likes: int
+
+
 class CommentInput(BaseModel):
     comments: str
     post_id: int
@@ -23,10 +27,21 @@ class CommentOutput(CommentInput):
     id: int
     user_id: int
 
+
 class UserPostWithComments(BaseModel):
-    post: UserPostOutput
+    post: UserPostWithLikes
     comments: list[CommentOutput]
+
 
 class UserPostwithComments(BaseModel):
     post: UserPostOutput
     comments: list[CommentOutput]
+
+
+class PostLikeInput(BaseModel):
+    post_id: int
+
+
+class PostLikeOutput(PostLikeInput):
+    id: int
+    user_id: int
