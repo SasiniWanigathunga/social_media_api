@@ -3,7 +3,7 @@ from pathlib import Path
 from functools import lru_cache
 from pydantic_settings import BaseSettings
 
-ENV_FILE = Path(__file__).resolve().parent / ".env"
+ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
 
 class BaseConfig(BaseSettings):
     ENV_STATE: Optional[str] = None
