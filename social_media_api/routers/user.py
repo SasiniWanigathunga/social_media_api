@@ -1,10 +1,11 @@
 import logging
 
-from fastapi import APIRouter, HTTPException, status, Request
+from fastapi import APIRouter, HTTPException, status, Request, BackgroundTasks
 
 from social_media_api.database import database, user_table
 from social_media_api.models.user import UserInput
 from social_media_api.security import get_user, get_hashed_password, authenticate_user, create_access_token, get_subject_for_security_token, create_confirmation_token
+from social_media_api import tasks
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +13,7 @@ router = APIRouter()
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register(user_input: UserInput, request: Request):
+async def register(user_input: UserInput, background_tasks: BackgroundTasks, request: Request):
     if await get_user(user_input.email):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists"
@@ -23,11 +24,15 @@ async def register(user_input: UserInput, request: Request):
     )
     logger.debug(query)
     await database.execute(query)
-    return {
-        "detail": "User created successfully. Please check your email to confirm your account.",
-        "confirmation_email": request.url_for(
+    background_tasks.add_task(
+        tasks.send_user_registration_email,
+        user_input.email,
+        confirmation_url=request.url_for(
             "confirm_email", token=create_confirmation_token(user_input.email)
-        )
+        ),
+    )
+    return {
+        "detail": "User created successfully. Please check your email to confirm your account."
     }
 
 
