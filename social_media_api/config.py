@@ -1,16 +1,18 @@
 from typing import Optional
 from pathlib import Path
 from functools import lru_cache
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
 
 class BaseConfig(BaseSettings):
     ENV_STATE: Optional[str] = None
 
-    class Config:
-        env_file = str(ENV_FILE)
-        extra = "ignore"
+    model_config = SettingsConfigDict(
+        env_file=ENV_FILE,
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
 class GlobalConfig(BaseConfig):
     DATABASE_URL: Optional[str] = None
@@ -25,20 +27,17 @@ class GlobalConfig(BaseConfig):
     DEEPAI_API_KEY: Optional[str] = None
 
 class DevConfig(GlobalConfig):
-    class Config:
-        env_prefix: str = "DEV_"
+    model_config = SettingsConfigDict(env_prefix="DEV_")
 
 class TestConfig(GlobalConfig): 
     # run the values from the test config when running tests not from .env file
     DATABASE_URL: Optional[str] = "sqlite:///test.db"
     DB_FORCE_ROLL_BACK: bool = True # database will be cleared when the connection is closed
     
-    class Config:
-        env_prefix: str = "TEST_"
+    model_config = SettingsConfigDict(env_prefix="TEST_")
 
 class ProdConfig(GlobalConfig):
-    class Config:
-        env_prefix: str = "PROD_"
+    model_config = SettingsConfigDict(env_prefix="PROD_")
 
 @lru_cache()
 def get_config(env_state: str):

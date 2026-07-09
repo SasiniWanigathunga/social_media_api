@@ -1,22 +1,23 @@
-from fastapi import APIRouter, Depends
-from typing import Annotated
-from enum import Enum
 import logging
+from enum import Enum
+from typing import Annotated
+
 import sqlalchemy
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request
+
+from social_media_api import security
+from social_media_api.database import comment_table, database, like_table, post_table
 from social_media_api.models.post import (
-    UserPostInput,
-    UserPostOutput,
-    UserPostWithLikes,
     CommentInput,
     CommentOutput,
     PostLikeInput,
     PostLikeOutput,
+    UserPostInput,
+    UserPostOutput,
     UserPostWithComments,
+    UserPostWithLikes,
 )
 from social_media_api.models.user import User
-from social_media_api import security
-from social_media_api.database import post_table, comment_table, like_table, database
-from fastapi import HTTPException, BackgroundTasks, Request
 from social_media_api.tasks import generate_and_add_to_post
 
 router = APIRouter()
@@ -43,10 +44,10 @@ async def create_post(
     current_user: Annotated[User, Depends(security.get_current_user)],
     background_tasks: BackgroundTasks,
     request: Request,
-    prompt: str = None
+    prompt: str = None,
 ):
     logger.info(f"Creating a new post")  # noqa
-    data = {**post.dict(), "user_id": current_user.id}
+    data = {**post.model_dump(), "user_id": current_user.id}
     query = post_table.insert().values(**data)
     logger.debug(f"Executing query: {query}")
     last_record_id = await database.execute(query)
@@ -58,7 +59,7 @@ async def create_post(
             post_id=last_record_id,
             post_url=request.url_for("get_post_with_comments", post_id=last_record_id),
             database=database,
-            prompt=prompt
+            prompt=prompt,
         )
 
     logger.info(f"Post created with ID: {last_record_id}")
@@ -94,7 +95,7 @@ async def create_comment(
     current_user: Annotated[User, Depends(security.get_current_user)],
 ):
     logger.info(f"Creating a new comment for post ID: {comment.post_id}")
-    data = {**comment.dict(), "user_id": current_user.id}
+    data = {**comment.model_dump(), "user_id": current_user.id}
     post = await find_post(data["post_id"])
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -135,7 +136,7 @@ async def like_post(
     current_user: Annotated[User, Depends(security.get_current_user)],
 ):
     logger.info(f"Creating a new like for post ID: {like.post_id}")
-    data = {**like.dict(), "user_id": current_user.id}
+    data = {**like.model_dump(), "user_id": current_user.id}
     post = await find_post(data["post_id"])
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
