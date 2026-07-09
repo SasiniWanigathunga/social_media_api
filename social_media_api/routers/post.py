@@ -16,7 +16,8 @@ from social_media_api.models.post import (
 from social_media_api.models.user import User
 from social_media_api import security
 from social_media_api.database import post_table, comment_table, like_table, database
-from fastapi import HTTPException
+from fastapi import HTTPException, BackgroundTasks, Request
+from social_media_api.tasks import generate_and_add_to_post
 
 router = APIRouter()
 
@@ -40,12 +41,26 @@ async def find_post(post_id: int):
 async def create_post(
     post: UserPostInput,
     current_user: Annotated[User, Depends(security.get_current_user)],
+    background_tasks: BackgroundTasks,
+    request: Request,
+    prompt: str = None
 ):
     logger.info(f"Creating a new post")  # noqa
     data = {**post.dict(), "user_id": current_user.id}
     query = post_table.insert().values(**data)
     logger.debug(f"Executing query: {query}")
     last_record_id = await database.execute(query)
+
+    if prompt:
+        background_tasks.add_task(
+            generate_and_add_to_post,
+            email=current_user.email,
+            post_id=last_record_id,
+            post_url=request.url_for("get_post_with_comments", post_id=last_record_id),
+            database=database,
+            prompt=prompt
+        )
+
     logger.info(f"Post created with ID: {last_record_id}")
     return {**data, "id": last_record_id}
 
