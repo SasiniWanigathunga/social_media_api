@@ -4,3 +4,4 @@ ruff
 pytest
 httpx
 pytest-mock
+pyfakefs

@@ -19,6 +19,10 @@ class GlobalConfig(BaseConfig):
     MAILGUN_API_URL: str = "https://api.mailgun.net/v3"
     MAILGUN_DOMAIN: Optional[str] = None
     MAILGUN_API_KEY: Optional[str] = None
+    B2_KEY_ID: Optional[str] = None
+    B2_APPLICATION_KEY: Optional[str] = None
+    B2_BUCKET_NAME: Optional[str] = None
+    DEEPAI_API_KEY: Optional[str] = None
 
 class DevConfig(GlobalConfig):
     class Config:

@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict
+from typing import Optional
 
 
 class UserPostInput(BaseModel):
@@ -10,6 +11,7 @@ class UserPostInput(BaseModel):
 class UserPostOutput(UserPostInput):
     id: int
     user_id: int
+    image_url: Optional[str] = None
 
 
 class UserPostWithLikes(UserPostOutput):

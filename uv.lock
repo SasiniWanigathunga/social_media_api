@@ -3,6 +3,15 @@ revision = 3
 requires-python = ">=3.13"
 
 [[package]]
+name = "aiofiles"
+version = "25.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/41/c3/534eac40372d8ee36ef40df62ec129bee4fdb5ad9706e58a29be53b2c970/aiofiles-25.1.0.tar.gz", hash = "sha256:a8d728f0a29de45dc521f18f07297428d56992a742f0cd2701ba86e44d23d5b2", size = 46354, upload-time = "2025-10-09T20:51:04.358Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bc/8a/340a1555ae33d7354dbca4faa54948d76d89a27ceef032c8c3bc661d003e/aiofiles-25.1.0-py3-none-any.whl", hash = "sha256:abe311e527c862958650f9438e859c1fa7568a141b22abcd015e120e86a85695", size = 14668, upload-time = "2025-10-09T20:51:03.174Z" },
+]
+
+[[package]]
 name = "aiosqlite"
 version = "0.22.1"
 source = { registry = "https://pypi.org/simple" }
@@ -51,6 +60,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/2a/25/df29145ef02ca69548e82b50ed15ac5c438ab5caf7b8e717d2b1258f5bea/asgi_correlation_id-5.0.1.tar.gz", hash = "sha256:ad54374a300f000b8bef3b39738768842394de0a3c528a6f77ef3ca053eb89a1", size = 10642, upload-time = "2026-06-09T15:09:49.112Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ae/fe/3f5a304ddc2b625a6a2fda913b29bc4675c434016557592791cf1aa39a60/asgi_correlation_id-5.0.1-py3-none-any.whl", hash = "sha256:dfea97c1fc41e8eadc3e518a311427cba6e7e79d9ddb6a6c7ea8879f2408d91d", size = 12026, upload-time = "2026-06-09T15:09:48.155Z" },
+]
+
+[[package]]
+name = "b2sdk"
+version = "2.12.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "annotated-types" },
+    { name = "logfury" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/41/d8/45bc23014df0d263d2bda904bcb993f3771f7b2dbd40f06fdcbe910271ac/b2sdk-2.12.0.tar.gz", hash = "sha256:da7b65e1af4f59c7de7d079c1e25de6b033aa45090fded4caefe52ded9b13ee6", size = 209696, upload-time = "2026-05-05T15:42:16.04Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/06/ba5d1fa6170651197fe1eed9d70884517f4df6f264a4647f23e61bb21b46/b2sdk-2.12.0-py3-none-any.whl", hash = "sha256:58af4e925b2ed0422b4f2f26ee3f53c7045520ae6ddcbe65b5bc9e4b99725bce", size = 300909, upload-time = "2026-05-05T15:42:14.574Z" },
 ]
 
 [[package]]
@@ -256,13 +279,16 @@ name = "fastapi-course"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "aiofiles" },
     { name = "asgi-correlation-id" },
+    { name = "b2sdk" },
     { name = "databases", extra = ["aiosqlite"] },
     { name = "fastapi" },
     { name = "httpx" },
     { name = "logtail-python" },
     { name = "passlib", extra = ["bcrypt"] },
     { name = "pydantic-settings" },
+    { name = "pyfakefs" },
     { name = "pytest" },
     { name = "pytest-mock" },
     { name = "python-dotenv" },
@@ -277,13 +303,16 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "aiofiles", specifier = ">=25.1.0" },
     { name = "asgi-correlation-id", specifier = ">=5.0.1" },
+    { name = "b2sdk", specifier = ">=2.12.0" },
     { name = "databases", extras = ["aiosqlite"], specifier = ">=0.9.0" },
     { name = "fastapi", specifier = ">=0.136.1" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "logtail-python", specifier = ">=0.3.4" },
     { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7.4" },
     { name = "pydantic-settings", specifier = ">=2.14.2" },
+    { name = "pyfakefs", specifier = ">=6.2.0" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
@@ -418,6 +447,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/72/34/14ca021ce8e5dfedc35312d08ba8bf51fdd999c576889fc2c24cb97f4f10/iniconfig-2.3.0.tar.gz", hash = "sha256:c76315c77db068650d49c5b56314774a7804df16fee4402c1f19d6d15d8c4730", size = 20503, upload-time = "2025-10-18T21:55:43.219Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cb/b1/3846dd7f199d53cb17f49cba7e651e9ce294d8497c8c150530ed11865bb8/iniconfig-2.3.0-py3-none-any.whl", hash = "sha256:f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12", size = 7484, upload-time = "2025-10-18T21:55:41.639Z" },
+]
+
+[[package]]
+name = "logfury"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/90/f2/24389d99f861dd65753fc5a56e2672339ec1b078da5e2f4b174d0767b132/logfury-1.0.1.tar.gz", hash = "sha256:130a5daceab9ad534924252ddf70482aa2c96662b3a3825a7d30981d03b76a26", size = 12826, upload-time = "2021-10-23T23:23:03.847Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/c7/8a2cfdf39f4cbbb307603aeb03ca89a4765b96be310a0848b20eb4d17e76/logfury-1.0.1-py3-none-any.whl", hash = "sha256:b4f04be1701a1df644afc3384d6167d64c899f8036b7eefc3b6c570c6a9b290b", size = 7512, upload-time = "2021-10-23T23:23:02.21Z" },
 ]
 
 [[package]]
@@ -619,6 +657,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5c/b5/8f48e906c3e0205276e8bd8cb7512217a87b2685304d64be27cad5b3019f/pydantic_settings-2.14.2.tar.gz", hash = "sha256:c19dd64b19097f1de80184f0cc7b0272a13ae6e170cbf240a3e27e381ed14a5f", size = 237700, upload-time = "2026-06-19T13:44:56.324Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/77/c1/6e422f34e569cf8e18df68d1939c81c099d2b61e4f7d9621c8a77560799c/pydantic_settings-2.14.2-py3-none-any.whl", hash = "sha256:a20c97b37910b6550d5ea50fbcc2d4187defe58cd57070b73863d069419c9440", size = 61715, upload-time = "2026-06-19T13:44:55.02Z" },
+]
+
+[[package]]
+name = "pyfakefs"
+version = "6.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/98/0d/c80012ee6e885c293ad63c5f5b049d3ef3fd2b32bbe6fa8739145f392ec6/pyfakefs-6.2.0.tar.gz", hash = "sha256:e59a36db447bf509ce9c97ab3d1510c08cc51895c5311325a560a5e5b5dc1940", size = 228273, upload-time = "2026-04-12T13:38:50.411Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b2/80/97571ac8295289c267367b7b60aadeae1a9a841e83f0a96ad9b65d1dd3c0/pyfakefs-6.2.0-py3-none-any.whl", hash = "sha256:0968a49db692694ffed420e54a9f1cbae4636637b880e8ab09c8ccc0f11bd7ae", size = 241113, upload-time = "2026-04-12T13:38:48.927Z" },
 ]
 
 [[package]]

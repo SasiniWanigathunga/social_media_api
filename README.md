@@ -90,6 +90,11 @@ Then open the interactive docs at <http://127.0.0.1:8000/docs>.
 | GET    | `/posts/{post_id}/comments` | List comments for a post |
 | GET    | `/posts/{post_id}`          | Get a post with its comments |
 
+## Activate the environment
+```bash
+source .venv/bin/activate
+```
+
 ## Running tests
 
 ```bash

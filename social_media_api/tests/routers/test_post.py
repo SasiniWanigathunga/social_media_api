@@ -63,6 +63,7 @@ async def test_create_post(
         "id": 1,
         "content": content,
         "user_id": confirmed_user["id"],
+        "image_url": None,
     }.items() <= response.json().items()
 
 
